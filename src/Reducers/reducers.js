@@ -3,7 +3,7 @@ import {
     LOG_USERS,
     EDIT_USERNAME,
     LOG_OUT,
-    GET_SESSIONS
+    MODIFY_SESSION
 } from '../Constants/constants';
 
 export const userReducer = (state = {userData: {}}, action) => {
@@ -40,6 +40,23 @@ export const usersReducer = (state = {users: []}, action) => {
                 return {
                     ...state,
                     users: [...state.users, user]
+                };
+            }
+
+        case MODIFY_SESSION:
+            const data = action.payload;
+            const {update} = data;
+            const userPresent = state.users.find((x) => x.username === data.update.username);
+
+            if(userPresent) {
+                return {
+                    ...state,
+                    users: state.users.map((x) => x.username === data.update.username ? data.update : x)
+                }
+            } else {
+                return {
+                    ...state,
+                    users: [...state.users, update]
                 };
             }
         

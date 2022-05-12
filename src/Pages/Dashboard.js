@@ -1,24 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {Container, Button, Modal, Form} from 'react-bootstrap';
-import {editUserName, logout} from '../Actions/actions';
+import {Container, Button, Modal, Form, Table} from 'react-bootstrap';
+import {editUserName, logout, updateSession} from '../Actions/actions';
 
 function Dashboard() {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [userName, setUserName] = useState('');
   const [show, setShow] = useState(false);
+  const [sessions, setSessions] = useState([]);
+  const [currentTime, setCurretTime] = useState(0);
 
   const user = useSelector(state => state.user);
   const {userData} = user;
 
+  const userList = useSelector(state => state.userList);
+  const {users} = userList;
+
+  setInterval(() => {
+    setCurretTime(new Date().getTime());
+  }, 1000);
+ 
   useEffect(() => {
+    setSessions(users)
+
     if(Object.keys(userData).length !== 0) {
       setName(userData.username);
     } else {
       window.location.replace('/');
     }
-  }, [userData]);
+  }, [userData, user, users, userList]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -31,6 +42,14 @@ function Dashboard() {
   const handleLogout = () => {
     dispatch(logout());
     window.location.replace('/');
+  };
+
+  const handleSesion = (id, data) => {
+    dispatch(updateSession(id, data));
+
+    if(data.username === name) {
+      handleLogout();
+    }
   };
 
   return (
@@ -80,6 +99,54 @@ function Dashboard() {
               </Button>
             </div>
           </div>
+
+          <h3 className='mt-5'>
+            {sessions.length > 1 ? 'Manage Sessions' : 'Manage Session'}
+          </h3>
+          <Table  bordered size="sm">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                sessions.map((session, index) => (
+                  <tr key={index} style={{backgroundColor: name === session.username ? 'lightgreen' : 'transparent'}}>
+                    <td>{session.username}</td>
+                    <td>
+                      {  
+                        session.exitTime ? 'Logged out' :
+                        (Math.floor(((Number(currentTime) - Number(session.entryTime)) % (1000 * 60 * 60)) / 1000) > 60 ? 'Idle'  : 'Active')
+                      }
+                      
+                    </td>
+                    <td>
+                      {
+                        session.exitTime ? (
+                          <Button 
+                            variant='secondary' 
+                          >
+                            User logged out
+                          </Button>
+                        ) : (
+                          <Button 
+                            variant='danger' 
+                            onClick={() => handleSesion(index, session)}
+                          >
+                            Logout session
+                          </Button>
+                        )
+                      }
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </Table>
+
       </Container>
     </div>
   );

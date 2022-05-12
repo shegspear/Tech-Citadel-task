@@ -3,13 +3,13 @@ import {
     LOG_USERS,
     EDIT_USERNAME,
     LOG_OUT,
-    GET_SESSIONS
+    MODIFY_SESSION,
 } from '../Constants/constants';
 
 export const signin = (username) => async (dispatch, getState) => {
     const userObj = {
         username,
-        entryTime: Date.now(),
+        entryTime: new Date().getTime(),
         exitTime: null,
     };
 
@@ -24,7 +24,7 @@ export const signin = (username) => async (dispatch, getState) => {
 export const markLog = (username) => async (dispatch, getState) => {
     const userObj = {
         username,
-        entryTime: Date.now(),
+        entryTime: new Date().getTime(),
         exitTime: null,
     };
 
@@ -39,13 +39,13 @@ export const markLog = (username) => async (dispatch, getState) => {
 export const editUserName = (userName) => async (dispatch, getState) => {
     const userLS = localStorage.getItem('userData') ? 
     JSON.parse(localStorage.getItem('userData')) : {};
-    const {entryTime, exitTime} = userLS;
+    const {exitTime} = userLS;
 
     dispatch({
         type: EDIT_USERNAME,
         payload: {
             username: userName,
-            entryTime,
+            entryTime: new Date().getTime(),
             exitTime
         }
     });
@@ -64,10 +64,33 @@ export const logout = () => async (dispatch, getState) => {
         payload: {
             username,
             entryTime,
-            exitTime: Date.now()
+            exitTime: new Date().getTime()
         }
     });
 
     localStorage.removeItem('userData'); 
     localStorage.setItem('users', JSON.stringify(getState().userList.users));
 };
+
+export const updateSession = (id, data) => async (dispatch, getState) => {
+    // console.log('id: >>',id);
+    // console.log('update: ',{
+    //     username: data.username,
+    //     entryTime: data.entryTime,
+    //     exitTime: new Date().getTime()
+    // })
+    dispatch({
+        type: MODIFY_SESSION,
+        payload: {
+            id,
+            update: {
+                username: data.username,
+                entryTime: data.entryTime,
+                exitTime: new Date().getTime()
+            }
+        }
+    });
+
+    localStorage.setItem('userData', JSON.stringify(getState().user.userData)); 
+    localStorage.setItem('users', JSON.stringify(getState().userList.users));
+}
