@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Form, Button, Alert } from 'react-bootstrap';
 
 import {signin, markLog} from '../Actions/actions';
 
@@ -33,20 +32,30 @@ function SignIn() {
 
   return (
     <div style={styles.cont}>
-        <Container style={styles.formCont}>
+        <div className='container' style={styles.formCont}>
             {
                 show && (
-                    <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+                    <div className="alert alert-danger" role="alert" onClose={() => setShow(false)}>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         <h3 className='text-dark'>
                             Please ensure you enter your prefered username
                         </h3>
-                    </Alert>
+                    </div>
                 )
             }
 
             <h3 className='mb-4'>Hello !!!</h3>
 
-            <Form>
+            <form>
+                <div className="mb-3">
+                    <label className="form-label">Enter Username</label>
+                    <input onChange={(e) => setUserName(e.target.value)} placeholder="...Naruto" type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                    <div id="emailHelp" className="form-text">Please enter your preferred username.</div>
+                </div>
+                <button onClick={handleSubmit} className="btn btn-primary"> Sign In</button>
+            </form>
+
+            {/* <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Enter Username</Form.Label>
                     <Form.Control onChange={(e) => setUserName(e.target.value)} type="text" placeholder="...Naruto" required={true} />
@@ -58,8 +67,8 @@ function SignIn() {
                 <Button variant="primary" onClick={handleSubmit}>
                     Sign In
                 </Button>
-            </Form>
-        </Container>
+            </Form> */}
+        </div>
     </div>
   );
 };

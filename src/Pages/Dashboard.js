@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {Container, Button, Modal, Form, Table} from 'react-bootstrap';
 import {editUserName, logout, updateSession} from '../Actions/actions';
 
 function Dashboard() {
@@ -54,7 +53,7 @@ function Dashboard() {
 
   return (
     <div style={styles.cont}>
-      <Modal show={show} onHide={handleClose}>
+      {/* <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Sign in with a different username</Modal.Title>
         </Modal.Header>
@@ -73,9 +72,40 @@ function Dashboard() {
             </Button>
           </Form>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
 
-      <Container>
+          <div 
+            className="" 
+            style={{
+              transition: 'ease-in-ease-out 0.3s',
+              display: show ? 'block' : 'none',
+              width: '70%'
+            }}
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Enter Username</h5>
+                  <button onClick={handleClose} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                  
+                  <form>
+                      <div className="mb-3">
+                          <label className="form-label">Enter Username</label>
+                          <input onChange={(e) => setUserName(e.target.value)} placeholder="...Naruto" type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                          <div id="emailHelp" className="form-text">Change your username.</div>
+                      </div>
+                      <button onClick={handleSubmit} className="btn btn-success"> Save</button>
+                  </form>
+
+                </div>
+              
+              </div>
+            </div>
+          </div>
+
+      <div className='container'>
           <div className='d-flex flex-row justify-content-between align-items-center'>
             <div className='d-flex flex-row justify-content-between align-items-center'>
               <h3>Welcome</h3>
@@ -83,27 +113,24 @@ function Dashboard() {
             </div>
 
             <div>
-              <Button 
-                variant='danger'
+              <button type="button" className="btn btn-danger" 
                 onClick={handleLogout}
               >
                   Logout
-              </Button>
+              </button>
 
-              <Button 
-                variant='primary' 
-                className='ms-3' 
+              <button type="button" className="btn btn-primary ms-3" 
                 onClick={handleShow}
               >
                 Edit Username
-              </Button>
+              </button>
             </div>
           </div>
 
           <h3 className='mt-5'>
             {sessions.length > 1 ? 'Manage Sessions' : 'Manage Session'}
           </h3>
-          <Table  bordered size="sm">
+          <table className="table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -126,18 +153,19 @@ function Dashboard() {
                     <td>
                       {
                         session.exitTime ? (
-                          <Button 
-                            variant='secondary' 
+                          <button 
+                          className="btn btn-secondary" 
                           >
                             User logged out
-                          </Button>
+                          </button>
                         ) : (
-                          <Button 
-                            variant='danger' 
+                          <button 
+                            type='button'
+                            className="btn btn-danger" 
                             onClick={() => handleSesion(index, session)}
                           >
                             Logout session
-                          </Button>
+                          </button>
                         )
                       }
                     </td>
@@ -145,9 +173,9 @@ function Dashboard() {
                 ))
               }
             </tbody>
-          </Table>
+          </table>
 
-      </Container>
+      </div>
     </div>
   );
 };
@@ -160,7 +188,7 @@ const styles = {
       justifyContent: 'center',
       alignItems: 'center',
       paddingTop: '10%'
-  },
+  }
 }
 
 export default Dashboard;
