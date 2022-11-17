@@ -3,7 +3,8 @@ import {
     LOG_USERS,
     EDIT_USERNAME,
     LOG_OUT,
-    MODIFY_SESSION
+    MODIFY_SESSION,
+    GETTING_DATA
 } from '../Constants/constants';
 
 export const userReducer = (state = {userData: {}}, action) => {
@@ -13,6 +14,22 @@ export const userReducer = (state = {userData: {}}, action) => {
             return {
                 ...state,
                 userData: action.payload
+            };
+
+        case LOG_OUT:
+            return {};
+        
+        default:
+            return state;    
+    }
+};
+
+export const dataReducer = (state = {data: {}}, action) => {
+    switch(action.type) {
+        case GETTING_DATA:
+            return {
+                ...state,
+                data: action.payload
             };
 
         case LOG_OUT:

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import { Link } from 'react-router-dom';
 import {editUserName, logout, updateSession} from '../Actions/actions';
 
 function Dashboard() {
@@ -15,6 +16,10 @@ function Dashboard() {
 
   const userList = useSelector(state => state.userList);
   const {users} = userList;
+
+  const additionalData = useSelector(state => state.additionalData);
+  const {savedData: {email, house, year}} = additionalData;
+
 
   setInterval(() => {
     setCurretTime(new Date().getTime());
@@ -53,26 +58,6 @@ function Dashboard() {
 
   return (
     <div style={styles.cont}>
-      {/* <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Sign in with a different username</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Enter Username</Form.Label>
-                <Form.Control onChange={(e) => setUserName(e.target.value)} type="text" placeholder="...Naruto" required={true} />
-                <Form.Text className="text-muted">
-                  Change your username.
-                </Form.Text>
-            </Form.Group>
-
-            <Button variant="success" onClick={handleSubmit}>
-                Save
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal> */}
 
           <div 
             className="" 
@@ -118,16 +103,43 @@ function Dashboard() {
               >
                   Logout
               </button>
-
-              <button type="button" className="btn btn-primary ms-3" 
+              {/* DO NOT DELETE BELLOW */}
+              {/* <button type="button" className="btn btn-primary ms-3" 
                 onClick={handleShow}
               >
                 Edit Username
-              </button>
+              </button> */}
+            </div>
+          </div>
+          <div className='d-flex flex-row justify-content-between align-items-center'>
+            <div className='d-flex flex-row justify-content-between align-items-center'>
+              <h5>Of house: </h5>
+              <h6 className='ms-3'>{house}</h6>
+            </div>
+
+            <div className='d-flex flex-row justify-content-between align-items-center'>
+              <h5>Year: </h5>
+              <h6 className='ms-3'>{year}</h6>
+            </div>
+
+            <div className='d-flex flex-row justify-content-between align-items-center'>
+              <h5>Student email: </h5>
+              <h6 className='ms-3'>{email}</h6>
             </div>
           </div>
 
-          <h3 className='mt-5'>
+          <div className="container-fluid border border-1 pt-3">
+             <h4>Please select a subject</h4>
+
+             <div class="list-group">
+              <Link class="list-group-item list-group-item-action text-dark" to={'/aux-page/1'}> English</Link>
+              <Link class="list-group-item list-group-item-action text-dark" to={'/aux-page/2'}> Math</Link>
+              <Link class="list-group-item list-group-item-action text-dark" to={'/aux-page/3'}> English</Link>
+            </div> 
+          </div>
+
+          {/* DO NOT DELETE BELLOW */}
+          {/* <h3 className='mt-5'>
             {sessions.length > 1 ? 'Manage Sessions' : 'Manage Session'}
           </h3>
           <table className="table">
@@ -173,7 +185,7 @@ function Dashboard() {
                 ))
               }
             </tbody>
-          </table>
+          </table> */}
 
       </div>
     </div>

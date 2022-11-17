@@ -4,6 +4,7 @@ import {
     EDIT_USERNAME,
     LOG_OUT,
     MODIFY_SESSION,
+    GETTING_DATA
 } from '../Constants/constants';
 
 export const signin = (username) => async (dispatch, getState) => {
@@ -19,6 +20,21 @@ export const signin = (username) => async (dispatch, getState) => {
     });
 
     localStorage.setItem('userData', JSON.stringify(getState().user.userData));
+};
+
+export const holdData = (data) => async (dispatch, getState) => {
+    const dataObj = {
+        email: data.email,
+        house: data.house,
+        year: data.year
+    };
+
+    dispatch({
+        type: GETTING_DATA,
+        payload: dataObj
+    });
+
+    localStorage.setItem('savedData', JSON.stringify(dataObj));
 };
 
 export const markLog = (username) => async (dispatch, getState) => {
